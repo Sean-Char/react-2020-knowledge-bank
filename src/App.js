@@ -3,7 +3,7 @@ import './App.css';
 import Person from './Person/Person';
 
 const app = props => {
-
+ // Using hooks for updating state
   const [personsState, setPersonsState] = useState({
     persons: [
       { name: 'Jerry', age: 75 },
