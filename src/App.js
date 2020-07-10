@@ -1,44 +1,44 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import Person from './Person/Person';
 
-const app = props => {
- // Using hooks for updating state
-  const [personsState, setPersonsState] = useState({
+class App extends Component {
+  state = {
     persons: [
-      { name: 'Jerry', age: 75 },
-      { name: 'Dak', age: 23 },
-      { name: 'Zeke', age: 24 }
+      {name: 'Jerry', age: 75},
+      {name: 'Dak', age: 23},
+      {name: 'Zeke', age: 24}
     ]
-  });
+  }
 
-  const [otherState, setOtherState] = useState('some other value');
-
-  console.log(personsState, otherState);
-
-  const switchNameHandler = () => {
+  switchNameHandler = (newName) => {
     // console.log('was clicked');
-    setPersonsState({
-      persons: [
-       { name: 'Jerry Jones', age: 75 },
-       { name: 'Dak Presscott', age: 23 },
-       { name: 'Zeke Elliot', age: 25 }
-      ]
-    });
-  };
- 
-  return (
-    <div className="App">
-      <h1>Hi, I'm testing the App!</h1>
-      <button onClick={switchNameHandler}>Switch Name</button>
-      <Person name={personsState.persons[0].name} age={personsState.persons[0].age} />
-      <Person name={personsState.persons[1].name} age={personsState.persons[1].age} />
-      <Person name={personsState.persons[2].name} age={personsState.persons[2].age}>My Hobbies: Football</Person>
-    </div>
-  );
-  
+    this.setState({persons: [
+      {name: newName, age: 75},
+      {name: 'Dak Presscott', age: 23},
+      {name: 'Zeke Elliot', age: 25}
+    ]})
+
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <h1>Hi, I'm testing the App!</h1>
+        <button onClick={() => this.switchNameHandler('Jerry Jones 1')}>Switch Name</button>
+        <Person 
+          name={this.state.persons[0].name} 
+          age={this.state.persons[0].age} />
+        <Person 
+          name={this.state.persons[1].name}
+          age={this.state.persons[1].age} />
+        <Person 
+          name={this.state.persons[2].name} 
+          age={this.state.persons[2].age}
+          click={this.switchNameHandler.bind(this, 'Jerry Jones 2')} >My Hobbies: Football</Person>
+      </div>
+    );
+  }
 }
 
-export default app;
-
-
+export default App;
