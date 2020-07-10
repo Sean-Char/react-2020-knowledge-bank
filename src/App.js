@@ -5,22 +5,30 @@ import Person from './Person/Person';
 class App extends Component {
   state = {
     persons: [
-      {name: 'Jerry', age: 75},
-      {name: 'Dak', age: 23},
-      {name: 'Zeke', age: 24}
+      { id: 'hksy65', name: 'Jerry', age: 75},
+      { id: 'lisah98', name: 'Dak', age: 23},
+      { id: 'magtf53', name: 'Zeke', age: 24}
     ],
       otherState: 'some other value',
       showPersons: false
   }
 
-  nameChangeHandler = (event) => {
-    this.setState({
-      persons: [
-        { name: 'Jerry Jones', age: 75 },
-        { name: event.target.value, age: 23 },
-        { name: 'Zeke Elliot', age: 25 }
-      ]
-    })
+  nameChangeHandler = (event, id) => {
+    const personIndex = this.state.persons.findIndex(p => {
+      return p.id === id;
+    });
+
+    const person = {
+      ...this.state.persons[personIndex]
+    };
+
+    // const person = Object.assign({}, this.state.persons[personIndex]);  // old way of making a object copy
+    person.name = event.target.value;
+
+    const persons = [...this.state.persons];
+    persons[personIndex] = person;
+
+    this.setState({persons: persons})
   }
 
   deleteNameHandler = (personIndex) => {
@@ -38,7 +46,7 @@ class App extends Component {
   render() {
 
     const style = {
-      backgroundColor: 'white',
+      backgroundColor: 'green',
       font: 'inherit',
       border: '1px solid blue',
       padding: '8px',
@@ -54,15 +62,28 @@ class App extends Component {
             return <Person
               click={() => this.deleteNameHandler(index)}
               name={person.name} 
-              age={person.age} />
+              age={person.age} 
+              key={person.id} 
+              changed={(event) => this.nameChangeHandler(event, person.id)} />
           })}
         </div> 
       );
+
+      style.backgroundColor = 'red';
+    }
+
+    const classes = [];
+    if (this.state.persons.length <= 2) {
+      classes.push('red'); // classes = ['red']
+    }
+    if (this.state.persons.length <= 1) {
+      classes.push('bold'); // classes = ['red','bold']
     }
 
     return (
       <div className="App">
         <h1>Hi, I'm testing the App!</h1>
+        <p className={classes.join(' ')}>My second sentence on the page</p>
         <button 
           style={style}
           onClick={this.togglePersonsHandler}>Switch Name</button>
